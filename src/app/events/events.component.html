@@ -1,0 +1,61 @@
+<br>
+<div class="container rounded p-4 shadow-lg" style="background-color: #f8f9fa;">
+  <div class="row justify-content-center align-items-center" style="height: 200px;">
+    <div class="col text-center">
+      <h1 class="text-primary display-3">Events</h1>
+    </div>
+  </div>
+</div>
+
+
+<br>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="container">
+        <label for="region">Region:</label>
+        <select id="region" (change)="handleChange()" class="custom-select">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+        </select>
+
+        <!-- Custom Checkbox -->
+        <label *ngFor="let eventType of eventTypes" class="custom-checkbox">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          {{ eventType }}
+        </label>
+
+        <!-- Your event list -->
+      </div>
+
+
+
+    </div>
+
+
+    <div class="col-md-6">
+      <div *ngIf="events && events.length">
+        <div *ngFor="let event of events" class="card mb-3">
+          <div class="card-body">
+            <h2 class="card-title">{{ event.eventName }}</h2>
+            <p class="card-text"><strong>Description:</strong> {{ event.eventDescription }}</p>
+            <p class="card-text"><strong>Location:</strong> {{ event.eventLocation }}</p>
+            <p class="card-text"><strong>Start Date:</strong> {{ event.eventStartDate | date }}</p>
+            <p class="card-text"><strong>End Date:</strong> {{ event.eventEndDate | date }}</p>
+            <p class="card-text"><strong>Type:</strong> {{ event.eventType }}</p>
+            <p class="card-text"><strong>Status:</strong> {{ event.eventStatus }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!events || events.length === 0" class="alert alert-info" role="alert">
+        No events found.
+      </div>
+    </div>
+
+
+  </div>
+</div>

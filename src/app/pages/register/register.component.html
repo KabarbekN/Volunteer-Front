@@ -1,0 +1,56 @@
+<div class="container-fluid card login-container">
+  <h3 class="text-center">Create a new account</h3>
+  <hr>
+
+  <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length">
+    <p *ngFor="let msg of errorMsg">{{ msg }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input [(ngModel)]="registerRequest.username" type="text" class="form-control" id="username" placeholder="whoAsks">
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input [(ngModel)]="registerRequest.password" type="password" class="form-control" id="password" placeholder="Password">
+  </div>
+<!--  <div class="row">-->
+<!--    <div class="col">-->
+<!--      <label class="form-label">Role</label>-->
+<!--      <div class="form-check container">-->
+<!--        <input class="form-check-input" type="radio" name="role" id="organizer" [(ngModel)]="registerRequest.role" value="ORGANIZATION">-->
+<!--        <label class="form-check-label" for="organizer">Organizer</label>-->
+<!--      </div>-->
+<!--      <div class="form-check">-->
+<!--        <input class="form-check-input" type="radio" name="role" id="volunteer" [(ngModel)]="registerRequest.role" value="VOLUNTEER">-->
+<!--        <label class="form-check-label" for="volunteer">Volunteer</label>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div class="row justify-content-center">
+    <div class="col">
+      <div class="d-flex justify-content-center"> <!-- Center the content horizontally -->
+
+        <div class="btn-group" role="group" aria-label="Role">
+        <button type="button" class="btn btn-outline-primary" [ngClass]="{ 'active': registerRequest.role === 'ORGANIZATION' }" (click)="selectRole('ORGANIZATION')">Organization</button>
+        <button type="button" class="btn btn-outline-primary" [ngClass]="{ 'active': registerRequest.role === 'VOLUNTEER' }" (click)="selectRole('VOLUNTEER')">Volunteer</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <hr>
+
+
+  <div class="d-flex justify-content-between mb-3">
+    <button (click)="register()" type="button" class="btn btn-primary">
+      <em class="fas fa-sign-in-alt">&nbsp; Create an account</em>
+    </button>
+
+    <div>
+      Already have an account?&nbsp;
+      <button (click)="login()" type="button" class="btn btn-link">Login</button>
+    </div>
+  </div>
+</div>

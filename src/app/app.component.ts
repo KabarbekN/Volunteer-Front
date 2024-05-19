@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TokenService} from "./services/token/token.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,18 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'volunteer-frontend';
+  username: string;
+  constructor(
+    private tokenService: TokenService,
+  ) {
+    this.username = ''
+  }
+
+  checkToken() {
+    console.log(this.tokenService.accessToken as string);
+    return this.tokenService.accessToken === undefined || this.tokenService.accessToken === null;
+  }
+  loadUser() {
+    this.tokenService.accessToken
+  }
 }
