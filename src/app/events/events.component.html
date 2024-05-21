@@ -16,19 +16,17 @@
     <div class="col-md-6">
       <div class="container">
         <label for="region">Region:</label>
-        <select id="region" (change)="handleChange()" class="custom-select">
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
+        <select id="region" [(ngModel)]="selectedCity" name="selectedCity" class="custom-select" (change)="handleChange('trigger')">
+          <option value="option1" [value]="city" *ngFor="let city of cities" [attr.selected]="selectedCity"> {{ city }}</option>
         </select>
 
         <!-- Custom Checkbox -->
         <label *ngFor="let eventType of eventTypes" class="custom-checkbox">
-          <input type="checkbox">
+          <input type="checkbox" (change)="handleChange(eventType)">
           <span class="checkmark"></span>
           {{ eventType }}
         </label>
 
-        <!-- Your event list -->
       </div>
 
 
@@ -47,6 +45,7 @@
             <p class="card-text"><strong>End Date:</strong> {{ event.eventEndDate | date }}</p>
             <p class="card-text"><strong>Type:</strong> {{ event.eventType }}</p>
             <p class="card-text"><strong>Status:</strong> {{ event.eventStatus }}</p>
+            <p class="card-text"><strong>City: </strong> {{ event.city }}</p>
           </div>
         </div>
       </div>

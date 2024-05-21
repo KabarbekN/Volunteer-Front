@@ -16,7 +16,6 @@ export class AppComponent {
   }
 
   checkToken() {
-    console.log(this.tokenService.accessToken as string);
     return this.tokenService.accessToken === undefined || this.tokenService.accessToken === null;
   }
   loadUser() {

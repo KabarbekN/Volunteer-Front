@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {AuthenticationControllerService} from "../../services/services/authentication-controller.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenService} from "../../services/token/token.service";
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent {
     private authService: AuthenticationControllerService,
     private tokenService: TokenService,
     private http : HttpClient,
+    private userService: UserService,
   ) {
 
   }
@@ -41,6 +43,9 @@ export class RegisterComponent {
         // console.log(response.access_token as string);
         this.tokenService.accessToken = response.access_token as string;
         this.tokenService.refreshToken = response.refreshToken as string;
+        this.userService.username = this.registerRequest.username;
+        this.userService.role = this.registerRequest.role as string;
+
         this.router.navigate(['/']);
 
 

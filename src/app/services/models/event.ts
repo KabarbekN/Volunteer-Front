@@ -13,4 +13,5 @@ export interface Event {
   eventType?: 'SOCIAL' | 'ECO';
   organization?: Organization;
   volunteers?: Array<User>;
+  city?: string;
 }

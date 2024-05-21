@@ -1,0 +1,71 @@
+<br><br>
+
+<div class="container">
+  <div class="row">
+
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card mb-4">
+          <img class="card-img-top" src="" alt="Profile Photo">
+          <div class="card-body">
+            <h2 class="card-title">User Details</h2>
+            <!-- User Details -->
+            <div class="user-details">
+              <p>Username : Yerasyl </p>
+              <p>Role : Volunteer </p>
+              <!-- Add user details here -->
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"> <button>My profile </button></h2>
+          <!-- Volunteer Package Info -->
+          <div class="volunteer-package-info">
+            <!-- Add information about volunteer package here -->
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h2 class="card-title"> <button>Settings </button></h2>
+          <!-- Settings -->
+          <div class="settings">
+            <!-- Add your settings options here -->
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"> <button> My Events </button></h2>
+          <!-- My Events -->
+          <div class="my-events">
+            <!-- Add your events list here -->
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">My Profile</h2>
+          <!-- Profile Info -->
+          <div class="profile-info">
+            <p><strong>First Name:</strong> {{ volunteer.firstName }}</p>
+            <p><strong>Last Name:</strong> {{ volunteer.lastName }}</p>
+            <p><strong>Email:</strong> {{ volunteer.email }}</p>
+            <p><strong>Phone:</strong> {{ volunteer.phone }}</p>
+            <p><strong>Address:</strong> {{ volunteer.address }}</p>
+            <p><strong>City:</strong> {{ volunteer.city }}</p>
+            <p><strong>About Me:</strong> {{ volunteer.aboutMe }}</p>
+            <p><strong>Birthday:</strong> {{ volunteer.birthday }}</p>
+            <p><strong>Gender:</strong> {{ volunteer.gender }}</p>
+            <p><strong>Experience Months:</strong> {{ volunteer.experienceMonth }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

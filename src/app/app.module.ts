@@ -11,6 +11,10 @@ import { AppNavbarComponent } from './layout/app.navbar/app.navbar.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EventsComponent } from './events/events.component';
 import {MatSelectModule} from "@angular/material/select";
+import { OrganizationsComponent } from './organizations/organizations.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { AboutComponent } from './about/about.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,10 @@ import {MatSelectModule} from "@angular/material/select";
     RegisterComponent,
     AppNavbarComponent,
     EventsComponent,
+    OrganizationsComponent,
+    ContactsComponent,
+    AboutComponent,
+    UserComponent,
 
   ],
   imports: [

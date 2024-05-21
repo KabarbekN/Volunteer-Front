@@ -26,26 +26,6 @@ export class LoginComponent {
   login() {
     this.postData()
     this.errorMsg = [];
-    // this.authService.authenticate({
-    //   body: this.authRequest
-    // }).pipe().subscribe(
-    //   {
-    //
-    //     next: (res) => {
-    //       console.log(res);
-    //       this.tokenService.token = res.access_token as string;
-    //       this.router.navigate([''])
-    //     },
-    //     error: (err) => {
-    //       if (err.error.validationErrors) {
-    //         this.errorMsg = err.error.validationErrors;
-    //       } else {
-    //         // this.errorMsg.push('An error occurred during authentication.');
-    //       }
-    //
-    //     }
-    //   }
-    // )
   }
 
 
@@ -63,6 +43,7 @@ export class LoginComponent {
         console.log(response.access_token as string);
         this.tokenService.accessToken = response.access_token as string;
         this.tokenService.refreshToken = response.refreshToken as string;
+        this.router.navigate(['events']);
         },
       error => {
         if (error.error.validationErrors) {

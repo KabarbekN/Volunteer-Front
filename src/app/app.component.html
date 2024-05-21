@@ -9,14 +9,14 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a class="nav-link px-2 text-secondary" routerLink="/">Erikti</a></li>
+          <li><a class="nav-link px-2 text-secondary" routerLink="events" server>Erikti</a></li>
           <li><a class="nav-link px-2 text-white" routerLink="organizations">Organizations</a></li>
           <li><a class="nav-link px-2 text-white" routerLink="events">Events</a></li>
           <li><a href="#" class="nav-link px-2 text-white" routerLink="contacts">Contact us</a></li>
           <li><a href="#" class="nav-link px-2 text-white" routerLink="about">About us</a></li>
         </ul>
         <div class="text-end" >
-          <div *ngIf="!checkToken()" routerLink="user-info" class="user-details-container justify-content-center">
+          <div *ngIf="!checkToken()" routerLink="user" class="user-details-container justify-content-center">
             <p>{{"Erasyl KTOtoTam" }}</p>
             <p>{{" ID: 2454313 "}}</p>
 
