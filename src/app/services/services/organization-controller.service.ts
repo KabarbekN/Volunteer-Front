@@ -11,6 +11,8 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { createOrganization } from '../fn/organization-controller/create-organization';
 import { CreateOrganization$Params } from '../fn/organization-controller/create-organization';
+import { getAllOrganizations } from '../fn/organization-controller/get-all-organizations';
+import { GetAllOrganizations$Params } from '../fn/organization-controller/get-all-organizations';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationControllerService extends BaseService {
@@ -41,6 +43,35 @@ export class OrganizationControllerService extends BaseService {
   createOrganization(params: CreateOrganization$Params, context?: HttpContext): Observable<{
 }> {
     return this.createOrganization$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllOrganizations()` */
+  static readonly GetAllOrganizationsPath = '/api/v1/organization/';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllOrganizations()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllOrganizations$Response(params?: GetAllOrganizations$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getAllOrganizations(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllOrganizations$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllOrganizations(params?: GetAllOrganizations$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getAllOrganizations$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)

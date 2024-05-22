@@ -33,6 +33,14 @@ export class OrganizationsComponent {
       email: 'email@example.com',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       owner: { username: 'Owner Name 2' }
+    },
+    {
+      name: 'Organization Name 2',
+      address: 'Address 2',
+      phone: 'Phone Number 2',
+      email: 'email@example.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      owner: { username: 'Owner Name 2' }
     }
     // Add more organizations as needed
   ];

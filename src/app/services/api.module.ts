@@ -7,6 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { OrganizationControllerService } from './services/organization-controller.service';
 import { EventControllerService } from './services/event-controller.service';
 import { AuthenticationControllerService } from './services/authentication-controller.service';
+import { VolunteerControllerService } from './services/volunteer-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -19,6 +20,7 @@ import { AuthenticationControllerService } from './services/authentication-contr
     OrganizationControllerService,
     EventControllerService,
     AuthenticationControllerService,
+    VolunteerControllerService,
     ApiConfiguration
   ],
 })

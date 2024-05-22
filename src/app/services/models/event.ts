@@ -3,6 +3,7 @@
 import { Organization } from '../models/organization';
 import { User } from '../models/user';
 export interface Event {
+  city?: string;
   eventDescription?: string;
   eventEndDate?: number;
   eventId?: number;
@@ -13,5 +14,4 @@ export interface Event {
   eventType?: 'SOCIAL' | 'ECO';
   organization?: Organization;
   volunteers?: Array<User>;
-  city?: string;
 }

@@ -16,11 +16,10 @@
           <li><a href="#" class="nav-link px-2 text-white" routerLink="about">About us</a></li>
         </ul>
         <div class="text-end" >
-          <div *ngIf="!checkToken()" routerLink="user" class="user-details-container justify-content-center">
-            <p>{{"Erasyl KTOtoTam" }}</p>
-            <p>{{" ID: 2454313 "}}</p>
-
-          </div>
+          <button *ngIf="!checkToken()" routerLink="user" class="user-details-container justify-content-center">
+            <p>{{ username }}</p>
+            <p>{{ role }}</p>
+          </button>
 
 
           <button *ngIf="checkToken()" type="button" class="btn btn-outline-light me-2" routerLink="login">Login</button>

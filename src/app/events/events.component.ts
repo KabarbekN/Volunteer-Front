@@ -55,7 +55,6 @@ export class EventsComponent {
     this.events.forEach(event => {
       if (this.previousEventTypes.includes(event.eventType as string) && (event.city === this.selectedCity || this.selectedCity === 'All')) {
           temp.push(event);
-
       }
     });
     this.events = temp;
