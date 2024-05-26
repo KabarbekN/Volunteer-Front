@@ -9,6 +9,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { getVolunteerById } from '../fn/volunteer-controller/get-volunteer-by-id';
+import { GetVolunteerById$Params } from '../fn/volunteer-controller/get-volunteer-by-id';
 import { getVolunteerByUsername } from '../fn/volunteer-controller/get-volunteer-by-username';
 import { GetVolunteerByUsername$Params } from '../fn/volunteer-controller/get-volunteer-by-username';
 
@@ -16,6 +18,35 @@ import { GetVolunteerByUsername$Params } from '../fn/volunteer-controller/get-vo
 export class VolunteerControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getVolunteerById()` */
+  static readonly GetVolunteerByIdPath = '/api/v1/volunteer/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getVolunteerById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getVolunteerById$Response(params: GetVolunteerById$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getVolunteerById(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getVolunteerById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getVolunteerById(params: GetVolunteerById$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getVolunteerById$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
   }
 
   /** Path part for operation `getVolunteerByUsername()` */

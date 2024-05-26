@@ -15,6 +15,7 @@ import { OrganizationsComponent } from './organizations/organizations.component'
 import { ContactsComponent } from './contacts/contacts.component';
 import { AboutComponent } from './about/about.component';
 import { UserComponent } from './user/user.component';
+import { NewEventComponent } from './events/new-event/new-event.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { UserComponent } from './user/user.component';
     ContactsComponent,
     AboutComponent,
     UserComponent,
+    NewEventComponent,
 
   ],
   imports: [

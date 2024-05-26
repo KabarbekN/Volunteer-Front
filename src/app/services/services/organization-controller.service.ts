@@ -13,6 +13,8 @@ import { createOrganization } from '../fn/organization-controller/create-organiz
 import { CreateOrganization$Params } from '../fn/organization-controller/create-organization';
 import { getAllOrganizations } from '../fn/organization-controller/get-all-organizations';
 import { GetAllOrganizations$Params } from '../fn/organization-controller/get-all-organizations';
+import { getOrganizationById } from '../fn/organization-controller/get-organization-by-id';
+import { GetOrganizationById$Params } from '../fn/organization-controller/get-organization-by-id';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationControllerService extends BaseService {
@@ -43,6 +45,35 @@ export class OrganizationControllerService extends BaseService {
   createOrganization(params: CreateOrganization$Params, context?: HttpContext): Observable<{
 }> {
     return this.createOrganization$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
+  }
+
+  /** Path part for operation `getOrganizationById()` */
+  static readonly GetOrganizationByIdPath = '/api/v1/organization/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getOrganizationById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getOrganizationById$Response(params: GetOrganizationById$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getOrganizationById(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getOrganizationById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getOrganizationById(params: GetOrganizationById$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getOrganizationById$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)

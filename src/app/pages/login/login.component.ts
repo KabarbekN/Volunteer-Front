@@ -4,6 +4,8 @@ import {AuthenticationRequest} from "../../services/models/authentication-reques
 import {AuthenticationControllerService} from "../../services/services/authentication-controller.service";
 import {TokenService} from "../../services/token/token.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {UserService} from "../../services/user/user.service";
+import {User} from "../../services/models/user";
 
 @Component({
   selector: 'app-login',
@@ -19,6 +21,8 @@ export class LoginComponent {
     private authService: AuthenticationControllerService,
     private tokenService: TokenService,
     private http: HttpClient,
+    private userService: UserService,
+
   ) {
 
   }
@@ -43,6 +47,12 @@ export class LoginComponent {
         console.log(response.access_token as string);
         this.tokenService.accessToken = response.access_token as string;
         this.tokenService.refreshToken = response.refreshToken as string;
+        this.http.get<User>(`http://localhost:8080/api/v1/user/username/${this.authRequest.username}`).subscribe(
+          response => {
+            this.userService.role = response.role as string;
+          }
+        )
+        this.userService.username = this.authRequest.username;
         this.router.navigate(['events']);
         },
       error => {

@@ -7,6 +7,7 @@ import {OrganizationsComponent} from "./organizations/organizations.component";
 import {ContactsComponent} from "./contacts/contacts.component";
 import {AboutComponent} from "./about/about.component";
 import {UserComponent} from "./user/user.component";
+import {NewEventComponent} from "./events/new-event/new-event.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserComponent,
+  },
+  {
+    path: 'create-event',
+    component: NewEventComponent
   }
 ];
 

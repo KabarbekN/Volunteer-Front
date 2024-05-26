@@ -22,4 +22,5 @@ export class UserService {
   get role() {
     return localStorage.getItem('role') as string;
   }
+
 }

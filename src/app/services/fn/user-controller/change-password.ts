@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { AuthenticationResponse } from '../../models/authentication-response';
-import { RegisterRequest } from '../../models/register-request';
+import { ChangePasswordRequest } from '../../models/change-password-request';
 
-export interface Register$Params {
-      body: RegisterRequest
+export interface ChangePassword$Params {
+      body: ChangePasswordRequest
 }
 
-export function register(http: HttpClient, rootUrl: string, params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
-  const rb = new RequestBuilder(rootUrl, register.PATH, 'post');
+export function changePassword(http: HttpClient, rootUrl: string, params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+  const rb = new RequestBuilder(rootUrl, changePassword.PATH, 'patch');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -24,9 +24,10 @@ export function register(http: HttpClient, rootUrl: string, params: Register$Par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<AuthenticationResponse>;
+      return r as StrictHttpResponse<{
+      }>;
     })
   );
 }
 
-register.PATH = '/api/v1/auth/register';
+changePassword.PATH = '/api/v1/user';

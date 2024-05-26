@@ -10,13 +10,6 @@
             <option value="option1" [value]="city" *ngFor="let city of cities" [attr.selected]="selectedCity"> {{ city }}</option>
           </select>
 
-          <!-- Custom Checkbox -->
-          <label *ngFor="let eventType of eventTypes" class="custom-checkbox">
-            <input type="checkbox" (change)="handleChange(eventType)">
-            <span class="checkmark"></span>
-            {{ eventType }}
-          </label>
-
         </div>
       </div>
     </div>
@@ -29,7 +22,9 @@
           <p><strong>Phone:</strong> {{ organization.phone }}</p>
           <p><strong>Email:</strong> {{ organization.email }}</p>
           <p><strong>Description:</strong> {{ organization.description }}</p>
-<!--          <p class="owner"><strong>Owner:</strong> {{ organization.owner }}</p>-->
+          <p><strong>City:</strong> {{ organization.city }}</p>
+
+          <!--          <p class="owner"><strong>Owner:</strong> {{ organization.owner }}</p>-->
         </div>
       </div>
     </div>

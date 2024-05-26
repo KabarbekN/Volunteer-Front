@@ -9,12 +9,14 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { addVolunteer } from '../fn/event-controller/add-volunteer';
-import { AddVolunteer$Params } from '../fn/event-controller/add-volunteer';
 import { createEvent } from '../fn/event-controller/create-event';
 import { CreateEvent$Params } from '../fn/event-controller/create-event';
 import { getAllEvents } from '../fn/event-controller/get-all-events';
 import { GetAllEvents$Params } from '../fn/event-controller/get-all-events';
+import { getEventById } from '../fn/event-controller/get-event-by-id';
+import { GetEventById$Params } from '../fn/event-controller/get-event-by-id';
+import { getUsersAllEvents } from '../fn/event-controller/get-users-all-events';
+import { GetUsersAllEvents$Params } from '../fn/event-controller/get-users-all-events';
 
 @Injectable({ providedIn: 'root' })
 export class EventControllerService extends BaseService {
@@ -51,29 +53,58 @@ export class EventControllerService extends BaseService {
     );
   }
 
-  /** Path part for operation `addVolunteer()` */
-  static readonly AddVolunteerPath = '/api/v1/event/add-volunteer';
+  /** Path part for operation `getEventById()` */
+  static readonly GetEventByIdPath = '/api/v1/event/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addVolunteer()` instead.
+   * To access only the response body, use `getEventById()` instead.
    *
    * This method doesn't expect any request body.
    */
-  addVolunteer$Response(params: AddVolunteer$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+  getEventById$Response(params: GetEventById$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
-    return addVolunteer(this.http, this.rootUrl, params, context);
+    return getEventById(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `addVolunteer$Response()` instead.
+   * To access the full response (for headers, for example), `getEventById$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  addVolunteer(params: AddVolunteer$Params, context?: HttpContext): Observable<{
+  getEventById(params: GetEventById$Params, context?: HttpContext): Observable<{
 }> {
-    return this.addVolunteer$Response(params, context).pipe(
+    return this.getEventById$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
+  }
+
+  /** Path part for operation `getUsersAllEvents()` */
+  static readonly GetUsersAllEventsPath = '/api/v1/event/username/{username}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUsersAllEvents()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUsersAllEvents$Response(params: GetUsersAllEvents$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getUsersAllEvents(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getUsersAllEvents$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUsersAllEvents(params: GetUsersAllEvents$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getUsersAllEvents$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)

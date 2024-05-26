@@ -3,7 +3,9 @@
 import { User } from '../models/user';
 export interface Organization {
   address?: string;
+  approved?: boolean;
   bin?: string;
+  city?: 'ASTANA' | 'ALMATY' | 'KYZYLORDA' | 'TARAZ' | 'SHYMKENT' | 'AKTAU' | 'SEMEI' | 'OSKEMEN' | 'AKTOBE' | 'PAVLODAR' | 'TALDYKORGAN' | 'KOKSHETAU' | 'KOSTANAY' | 'ATYRAY' | 'TURKISTAN' | 'PETROPAVL' | 'ZHEZKAZGAN' | 'ORAL';
   description?: string;
   email?: string;
   name?: string;

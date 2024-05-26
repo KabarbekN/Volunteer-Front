@@ -6,8 +6,11 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { OrganizationControllerService } from './services/organization-controller.service';
 import { EventControllerService } from './services/event-controller.service';
+import { VolunteerEventRegistrationControllerService } from './services/volunteer-event-registration-controller.service';
 import { AuthenticationControllerService } from './services/authentication-controller.service';
+import { UserControllerService } from './services/user-controller.service';
 import { VolunteerControllerService } from './services/volunteer-controller.service';
+import { CityControllerService } from './services/city-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -19,8 +22,11 @@ import { VolunteerControllerService } from './services/volunteer-controller.serv
   providers: [
     OrganizationControllerService,
     EventControllerService,
+    VolunteerEventRegistrationControllerService,
     AuthenticationControllerService,
+    UserControllerService,
     VolunteerControllerService,
+    CityControllerService,
     ApiConfiguration
   ],
 })
