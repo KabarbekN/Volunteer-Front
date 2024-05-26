@@ -14,4 +14,5 @@ export interface Event {
   eventType: 'SOCIAL' | 'ECO';
   organization?: Organization;
   active?: boolean;
+  link? : string;
 }

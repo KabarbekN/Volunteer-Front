@@ -46,6 +46,8 @@
             <p class="card-text"><strong>Type:</strong> {{ event.eventType }}</p>
             <p class="card-text"><strong>Status:</strong> {{ event.eventStatus }}</p>
             <p class="card-text"><strong>City: </strong> {{ event.city }}</p>
+            <p *ngIf="event.link != null" class="card-text"><strong>Link to chat: </strong> <a href="{{event.link}}">Click me</a> </p>
+
             <button *ngIf="!checkIfAlreadyRegisteredOnEvent(event.eventId) && event.eventStatus == 'OPEN' && isVolunteer()" class="btn btn-primary" (click)="applyToEvent( event.eventId )"> Apply </button>
             <button *ngIf="checkIfAlreadyRegisteredOnEvent(event.eventId) && event.eventStatus == 'OPEN' && isVolunteer()" class="btn btn-danger" (click)="unapplyToEvent( event.eventId )"> Unapply </button>
 

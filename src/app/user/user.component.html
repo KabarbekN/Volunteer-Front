@@ -471,6 +471,10 @@
               <!-- Add other city options here -->
             </select>
           </div>
+          <div class="mb-3">
+            <label for="link" class="form-label">Link to event</label>
+            <input type="text" id="link" formControlName="link" class="form-control">
+          </div>
           <br>
           <!-- Add organization field if needed -->
           <button type="submit" class="btn btn-primary">Create Event</button>
@@ -499,8 +503,11 @@
               <th>Type</th>
               <th>Description</th>
               <th>Deactivate</th>
-              <th>Active status</th>>
+              <th>Active status</th>
+              <th>Volunteers</th>
             </tr>
+
+
             </thead>
             <tbody>
             <tr *ngFor="let event of organizationEventsList">
@@ -512,16 +519,61 @@
               <td>{{ event.eventStatus }}</td>
               <td>{{ event.eventType }}</td>
               <td>{{ event.eventDescription }}</td>
-              <td> {{ event.active }}</td>
-
+              <td>{{ event.active }}</td>
               <td>
-                <button *ngIf="event.active" style="background: red" (click)="deactivateEvent(event.eventId)"> Deactivate</button>
-                <button *ngIf="!event.active" (click)="activateEvent(event.eventId)"> Activate </button>
-
+                <button *ngIf="event.active" class="btn btn-outline-primary" style="background: red" (click)="deactivateEvent(event.eventId)">Deactivate</button>
+                <button *ngIf="!event.active" class="btn btn-success" (click)="activateEvent(event.eventId)">Activate</button>
+              </td>
+              <td>
+                <button class="btn btn-info" style="background: #2196F3" (click)="showVolunteersList(event.eventId)">Info</button>
               </td>
             </tr>
             </tbody>
           </table>
+
+          <!-- Volunteers Table -->
+          <div *ngIf="showVolunteers">
+            <div class="row">
+              <div class="col-md-6">
+                <h2 class="card-title">All Volunteer for chosen event</h2>
+              </div>
+              <div class="col-md-6 text-right">
+                <button class="btn btn-secondary" (click)="showVolunteers = false">Show less</button>
+              </div>
+            </div>
+          <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>Volunteer Id</th>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Birthday</th>
+              <th>Gender</th>
+              <th>About Me</th>
+              <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let volunteer of organizationEventsVolunteersList">
+              <td>{{ volunteer.volunteerId }}</td>
+              <td>{{ volunteer.user?.username }}</td>
+              <td>{{ volunteer.firstName || 'Not filled' }}</td>
+              <td>{{ volunteer.lastName || 'Not filled' }}</td>
+              <td>{{ volunteer.email || 'Not filled' }}</td>
+              <td>{{ volunteer.phone || 'Not filled' }}</td>
+              <td>{{ volunteer.city || 'Not filled' }}</td>
+              <td>{{ volunteer.birthday | date }}</td>
+              <td>{{ volunteer.gender || 'Not filled' }}</td>
+              <td>{{ volunteer.aboutMe || 'Not filled' }}</td>
+              <button style="background: red" class="btn btn-danger" (click)="unapplyFromEvent(chosenEventId, volunteer.volunteerId)">Delete</button>
+            </tr>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </div>

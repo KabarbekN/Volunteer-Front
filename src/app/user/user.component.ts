@@ -6,6 +6,7 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../services/models/user";
 import {Volunteer} from "../services/models/volunteer";
 import {Organization} from "../services/models/organization";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user',
@@ -25,8 +26,12 @@ export class UserComponent implements OnInit{
   organizationProfile: boolean;
   organizationEvents: boolean;
   creationEvent: boolean;
+  chosenEventId: number = 0;
+
+  showVolunteers: boolean;
 
   organizationEventsList: Event[] = [];
+  organizationEventsVolunteersList: Volunteer[] = [];
 
   // admin pages navigation
   usersList: boolean;
@@ -44,7 +49,9 @@ export class UserComponent implements OnInit{
 
   profileForm: FormGroup;
   changePasswordForm: FormGroup;
-  volunteerDetails: Volunteer = {};
+  volunteerDetails: Volunteer = {
+    volunteerId : 0
+  };
   cities : string[] = [];
   events: Event[] = [];
 
@@ -62,6 +69,7 @@ export class UserComponent implements OnInit{
     private eventFormBuilder: FormBuilder,
     private http: HttpClient,
     private formBuilder: FormBuilder,
+    private router: Router,
 
   ) {
     this.username = userService.username;
@@ -70,6 +78,7 @@ export class UserComponent implements OnInit{
     this.loadVolunteerData();
     this.loadOrganizationByUsername();
 
+    this.showVolunteers = false;
 
     // initialization of volunteer
     this.myProfile = true;
@@ -110,6 +119,7 @@ export class UserComponent implements OnInit{
       eventEndDate: ['', Validators.required],
       eventType: ['', Validators.required],
       city: ['', Validators.required],
+      link: ['', Validators.required]
       // organization: ['', Validators.required]
     });
 
@@ -208,7 +218,7 @@ export class UserComponent implements OnInit{
   }
 
   loadVolunteerData () {
-    this.http.get(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
+    this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
       (response) => {
         this.volunteerDetails = response;
       }
@@ -330,6 +340,20 @@ export class UserComponent implements OnInit{
     );
   }
 
+  unapplyFromEvent(eventId: number, volunteerId?: number) {
+
+    console.log(this.volunteer);
+
+    const url = `http://localhost:8080/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${volunteerId}`;
+    this.http.delete(url).subscribe(
+      (response) => {
+        console.log(response);
+        this.loadUserEvents();
+      }
+    );
+  }
+
+
   // loadOrganizationEvents(){
   //   this.http.get<Event[]>("http://localhost:8080/api/v1/event-registration/event/username/" + this.username).subscribe(
   //     response => {
@@ -352,6 +376,7 @@ export class UserComponent implements OnInit{
         eventEndDate: new Date(this.eventForm.get('eventEndDate')?.value).getTime(),
         eventType: this.eventForm.get('eventType')?.value,
         city: this.eventForm.get('city')?.value,
+        link: this.eventForm.get('link')?.value,
         organization: this.myOrganization,
       };
 
@@ -368,6 +393,7 @@ export class UserComponent implements OnInit{
         (response) => {
           console.log(response);
           this.loadOrganizationEventList(this.myOrganization.organizationId as number)
+          this.router.navigate(['user'])
 
         }
       )
@@ -440,5 +466,20 @@ export class UserComponent implements OnInit{
         this.loadedEventsList = response;
       }
     )
+  }
+
+  showVolunteersList(eventId: number) {
+    this.chosenEventId = eventId;
+    this.showVolunteers = false;
+    this.http.get<Volunteer[]>(`http://localhost:8080/api/v1/event-registration/event/${eventId}`).subscribe(
+      (response) => {
+        this.organizationEventsVolunteersList = response;
+      }
+    )
+
+    // todo
+
+    this.showVolunteers = true;
+
   }
 }

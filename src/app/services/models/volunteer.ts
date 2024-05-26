@@ -10,7 +10,7 @@ export interface Volunteer {
   address?: string;
   city?: City;
   aboutMe?: string;
-  birthday?: string; // You might need to handle date format conversion
+  birthday?: string;
   gender?: string;
   experienceMonth?: number;
 }
