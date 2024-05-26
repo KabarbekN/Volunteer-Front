@@ -12,4 +12,5 @@ export interface Organization {
   organizationId?: number;
   owner?: User;
   phone?: string;
+  isApproved?: boolean;
 }

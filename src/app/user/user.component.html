@@ -175,7 +175,7 @@
 
 
 
-<div class="container" *ngIf="role === 'VOLUNTEER'">
+<div class="container" *ngIf="role === 'ADMIN'">
   <div class="row">
 
 
@@ -193,7 +193,7 @@
           </div>
         </div>
         <div class="card-body">
-          <h2 class="card-title"> <button>Users list</button></h2>
+          <h2 class="card-title"> <button (click)="changeAdminLayout('users')" >Users list</button></h2>
           <!-- Volunteer Package Info -->
           <div class="volunteer-package-info">
             <!-- Add information about volunteer package here -->
@@ -201,14 +201,14 @@
         </div>
 
         <div class="card-body">
-          <h2 class="card-title"> <button>Events list </button></h2>
+          <h2 class="card-title"> <button (click)="changeAdminLayout('events')" >Events list </button></h2>
           <!-- Settings -->
           <div class="settings">
             <!-- Add your settings options here -->
           </div>
         </div>
         <div class="card-body">
-          <h2 class="card-title"> <button>Organizations list </button></h2>
+          <h2 class="card-title"> <button (click)="changeAdminLayout('organizations')" >Organizations list </button></h2>
           <!-- My Events -->
           <div class="my-events">
             <!-- Add your events list here -->
@@ -220,26 +220,124 @@
 
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-8" *ngIf="usersList">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">My Profile</h2>
-          <!-- Profile Info -->
-          <div class="profile-info">
-            <p><strong>First Name:</strong> {{ volunteer.firstName }}</p>
-            <p><strong>Last Name:</strong> {{ volunteer.lastName }}</p>
-            <p><strong>Email:</strong> {{ volunteer.email }}</p>
-            <p><strong>Phone:</strong> {{ volunteer.phone }}</p>
-            <p><strong>Address:</strong> {{ volunteer.address }}</p>
-            <p><strong>City:</strong> {{ volunteer.city }}</p>
-            <p><strong>About Me:</strong> {{ volunteer.aboutMe }}</p>
-            <p><strong>Birthday:</strong> {{ volunteer.birthday }}</p>
-            <p><strong>Gender:</strong> {{ volunteer.gender }}</p>
-            <p><strong>Experience Months:</strong> {{ volunteer.experienceMonth }}</p>
-          </div>
+          <h2 class="card-title">All users</h2>
+          <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+<!--              <th>Username</th>-->
+              <th>Volunteer Id</th>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Birthday</th>
+              <th>Gender</th>
+              <th>About Me</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let volunteer of loadedVolunteerList">
+              <td>{{ volunteer.volunteerId || 'Not filled' }}</td>
+              <td>{{ volunteer.user?.username }}</td>
+              <td>{{ volunteer.firstName || 'Not filled' }}</td>
+              <td>{{ volunteer.lastName || 'Not filled' }}</td>
+              <td>{{ volunteer.email || 'Not filled' }}</td>
+              <td>{{ volunteer.phone || 'Not filled' }}</td>
+              <td>{{ volunteer.city || 'Not filled' }}</td>
+              <td>{{ volunteer.birthday | date }}</td>
+              <td>{{ volunteer.gender || 'Not filled' }}</td>
+              <td>{{ volunteer.aboutMe || 'Not filled' }}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+
+    <div class="col-md-8" *ngIf="eventsList">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">All Events</h2>
+          <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Location</th>
+              <th>City</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Status</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Deactivate</th>
+              <th>Active status</th>>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let event of loadedEventsList">
+              <td>{{ event.eventName }}</td>
+              <td>{{ event.eventLocation }}</td>
+              <td>{{ event.city }}</td>
+              <td>{{ event.eventStartDate | date }}</td>
+              <td>{{ event.eventEndDate | date }}</td>
+              <td>{{ event.eventStatus }}</td>
+              <td>{{ event.eventType }}</td>
+              <td>{{ event.eventDescription }}</td>
+              <td> {{ event.active }}</td>
+
+              <td>
+                <button *ngIf="event.active" style="background: red" (click)="deactivateEvent(event.eventId)"> Deactivate</button>
+                <button *ngIf="!event.active" (click)="activateEvent(event.eventId)"> Activate </button>
+
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8" *ngIf="organizationList">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">All organizations</h2>
+          <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>Organization ID</th>
+
+              <th>Name</th>
+              <th>Description</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>City</th>
+              <th>Approved</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let organization of loadedOrganizationList">
+              <td> {{organization.organizationId}}</td>
+              <td>{{ organization.name }}</td>
+              <td>{{ organization.description }}</td>
+              <td>{{ organization.address }}</td>
+              <td>{{ organization.phone }}</td>
+              <td>{{ organization.email }}</td>
+              <td>{{ organization.city }}</td>
+              <td>{{ organization.isApproved ? 'Yes' : 'No' }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
 
   </div>
 </div>

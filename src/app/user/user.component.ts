@@ -32,7 +32,7 @@ export class UserComponent implements OnInit{
   usersList: boolean;
   eventsList: boolean;
   organizationList: boolean;
-  loadedUsersList: User[] = [];
+  loadedVolunteerList: Volunteer[] = [];
   loadedEventsList: Event[] = [];
   loadedOrganizationList: Organization[] = [];
 
@@ -86,6 +86,8 @@ export class UserComponent implements OnInit{
     this.usersList = true;
     this.eventsList = false;
     this.organizationList = false;
+    this.loadUsers();
+
 
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -390,4 +392,53 @@ export class UserComponent implements OnInit{
     )
   }
 
+  changeAdminLayout(layout: string) {
+    if (layout === 'users') {
+      this.usersList = true;
+      this.eventsList = false;
+      this.organizationList = false;
+      this.loadUsers();
+
+    }
+    if (layout === 'events'){
+      this.usersList = false;
+      this.eventsList = true;
+      this.organizationList = false;
+      this.loadEvents();
+
+    }
+    if (layout === 'organizations') {
+      this.usersList = false;
+      this.eventsList = false;
+      this.organizationList = true;
+      this.loadOrganizations();
+    }
+  }
+
+  loadUsers(){
+    this.http.get<Volunteer[]>(`http://localhost:8080/api/v1/volunteer/`).subscribe(
+      (response) =>
+      {
+        this.loadedVolunteerList = response;
+      }
+    )
+  }
+
+  loadOrganizations(){
+    this.http.get<Organization[]>(`http://localhost:8080/api/v1/organization/`).subscribe(
+      (response) =>
+      {
+        this.loadedOrganizationList = response;
+      }
+    )
+  }
+
+  loadEvents(){
+    this.http.get<Event[]>(`http://localhost:8080/api/v1/event/`).subscribe(
+      (response) =>
+      {
+        this.loadedEventsList = response;
+      }
+    )
+  }
 }
