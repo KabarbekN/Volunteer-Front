@@ -7,6 +7,7 @@ import {User} from "../services/models/user";
 import {Volunteer} from "../services/models/volunteer";
 import {Organization} from "../services/models/organization";
 import {Router} from "@angular/router";
+import {CreateRating} from "../services/models/create-rating";
 
 @Component({
   selector: 'app-user',
@@ -21,17 +22,25 @@ export class UserComponent implements OnInit{
   myProfile: boolean;
   userSettings: boolean;
   volunteerEvents: boolean;
+  ratingPageByVolunteer: boolean;
+
+  volunteerRatingForm: FormGroup;
 
   // organization pages navigation
   organizationProfile: boolean;
   organizationEvents: boolean;
   creationEvent: boolean;
   chosenEventId: number = 0;
+  ratingPageByOrganization: boolean;
 
   showVolunteers: boolean;
 
   organizationEventsList: Event[] = [];
   organizationEventsVolunteersList: Volunteer[] = [];
+  organizationVolunteers: Volunteer[] = [];
+
+  organizationRatingForm: FormGroup;
+
 
   // admin pages navigation
   usersList: boolean;
@@ -84,12 +93,16 @@ export class UserComponent implements OnInit{
     this.myProfile = true;
     this.userSettings = false;
     this.volunteerEvents = false;
+    this.ratingPageByVolunteer = false;
 
     // initialization of organization
 
     this.organizationProfile = true;
     this.organizationEvents = false;
     this.creationEvent = false;
+    this.ratingPageByOrganization = false;
+
+
 
     // initialization of admin
     this.usersList = true;
@@ -110,6 +123,18 @@ export class UserComponent implements OnInit{
       gender: ['', Validators.required],
       experienceMonth: ['', [Validators.required, Validators.min(0)]],
     });
+
+    this.organizationRatingForm = this.fb.group({
+      volunteer: ['', Validators.required],
+      rating: ['', Validators.required],
+      feedback: ['', Validators.required],
+    })
+
+    this.volunteerRatingForm = this.fb.group({
+      organization: ['', Validators.required],
+      rating: ['', Validators.required],
+      feedback: ['', Validators.required],
+    })
 
     this.eventForm = this.eventFormBuilder.group({
       eventName: ['', Validators.required],
@@ -250,7 +275,7 @@ export class UserComponent implements OnInit{
         console.log(response);
         this.events = response;
       }
-    )
+    );
   }
 
 
@@ -259,17 +284,28 @@ export class UserComponent implements OnInit{
       this.volunteerEvents = false;
       this.userSettings = true;
       this.myProfile = false;
+      this.ratingPageByVolunteer = false;
+
     }
     if (layout === 'volunteerEvents'){
       this.volunteerEvents = true;
       this.userSettings = false;
       this.myProfile = false;
+      this.ratingPageByVolunteer = false;
+
     }
     if (layout === 'profile'){
       this.volunteerEvents = false;
       this.userSettings = false;
       this.myProfile = true;
+      this.ratingPageByVolunteer = false;
 
+    }
+    if (layout === 'rate'){
+      this.volunteerEvents = false;
+      this.userSettings = false;
+      this.myProfile = false;
+      this.ratingPageByVolunteer = true;
     }
   }
 
@@ -278,19 +314,57 @@ export class UserComponent implements OnInit{
       this.organizationProfile = true;
       this.organizationEvents = false;
       this.creationEvent = false;
+      this.ratingPageByOrganization = false;
+
 
     }
     if (layout === 'events'){
       this.organizationProfile = false;
       this.organizationEvents = true;
       this.creationEvent = false;
+      this.ratingPageByOrganization = false;
+
 
     }
     if (layout === 'creationEvent') {
       this.creationEvent = true;
       this.organizationEvents = false;
       this.organizationProfile = false;
+      this.ratingPageByOrganization = false;
     }
+    if (layout === 'rate') {
+      this.creationEvent = false;
+      this.organizationEvents = false;
+      this.organizationProfile = false;
+      this.ratingPageByOrganization = true;
+      this.loadOrganizationVolunteers(this.myOrganization.organizationId as number);
+    }
+  }
+
+  changeAdminLayout(layout: string) {
+    console.log(layout);
+    if (layout === 'users') {
+      this.usersList = true;
+      this.eventsList = false;
+      this.organizationList = false;
+
+      this.loadUsers();
+
+    }
+    if (layout === 'events'){
+      this.usersList = false;
+      this.eventsList = true;
+      this.organizationList = false;
+      this.loadEvents();
+    }
+    if (layout === 'organizations') {
+      this.usersList = false;
+      this.eventsList = false;
+      this.organizationList = true;
+      this.loadOrganizations();
+    }
+
+
   }
 
   loadOrganizationByUsername(){
@@ -404,7 +478,7 @@ export class UserComponent implements OnInit{
     this.http.delete(`http://localhost:8080/api/v1/event/event/${eventId}`).subscribe(
       (response) => {
         console.log(response);
-        this.loadOrganizationEventList(this.myOrganization.organizationId as number)
+        this.loadEvents()
       }
     )
   }
@@ -413,33 +487,12 @@ export class UserComponent implements OnInit{
     this.http.get(`http://localhost:8080/api/v1/event/event/${eventId}`).subscribe(
       (response) => {
         console.log(response);
-        this.loadOrganizationEventList(this.myOrganization.organizationId as number)
+        this.loadEvents()
       }
     )
   }
 
-  changeAdminLayout(layout: string) {
-    if (layout === 'users') {
-      this.usersList = true;
-      this.eventsList = false;
-      this.organizationList = false;
-      this.loadUsers();
 
-    }
-    if (layout === 'events'){
-      this.usersList = false;
-      this.eventsList = true;
-      this.organizationList = false;
-      this.loadEvents();
-
-    }
-    if (layout === 'organizations') {
-      this.usersList = false;
-      this.eventsList = false;
-      this.organizationList = true;
-      this.loadOrganizations();
-    }
-  }
 
   loadUsers(){
     this.http.get<Volunteer[]>(`http://localhost:8080/api/v1/volunteer/`).subscribe(
@@ -460,7 +513,7 @@ export class UserComponent implements OnInit{
   }
 
   loadEvents(){
-    this.http.get<Event[]>(`http://localhost:8080/api/v1/event/`).subscribe(
+    this.http.get<Event[]>(`http://localhost:8080/api/v1/administration/events`).subscribe(
       (response) =>
       {
         this.loadedEventsList = response;
@@ -480,6 +533,38 @@ export class UserComponent implements OnInit{
     // todo
 
     this.showVolunteers = true;
+
+  }
+
+  loadOrganizationVolunteers(organizationId: number) {
+    this.http.get<Volunteer[]>("http://localhost:8080/api/v1/organization/volunteers?organizationId=" + organizationId).subscribe(
+      (response) => {
+        this.organizationVolunteers = response;
+      }
+    )
+
+
+  }
+
+  rateVolunteerByOrganization() {
+    if (this.organizationRatingForm.valid){
+      const formData = {
+        volunteerRating : this.organizationRatingForm.get('rating')?.value,
+        volunteerId: this.organizationRatingForm.get('volunteer')?.value,
+        feedback: this.organizationRatingForm.get('feedback')?.value,
+        organizationId: this.myOrganization.organizationId,
+      };
+      console.log(formData);
+
+      this.http.post("http://localhost:8080/api/v1/rating", formData).subscribe(
+        (response) => {
+          console.log(response)
+        }
+      )
+    }
+  }
+
+  rateOrganizationByVolunteer() {
 
   }
 }

@@ -36,7 +36,7 @@
 
     <div class="col-md-6">
       <div *ngIf="events && events.length">
-        <div *ngFor="let event of events" class="card mb-3">
+        <div *ngFor="let event of events"  class="card mb-3">
           <div class="card-body">
             <h2 class="card-title">{{ event.eventName }}</h2>
             <p class="card-text"><strong>Description:</strong> {{ event.eventDescription }}</p>
