@@ -9,11 +9,23 @@
         <div class="card mb-4">
 <!--          <img class="card-img-top" src="" alt="Profile Photo">-->
           <div class="card-body">
+<!--            <div class="upload-avatar">-->
+<!--              <div class="avatar-container">-->
+<!--                <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar" alt="User Avatar"/>-->
+<!--                <div *ngIf="!avatarUrl" class="avatar-placeholder">-->
+<!--                  <span>No Avatar</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <input type="file" (change)="onFileSelected($event)" />-->
+<!--              <button (click)="onUpload()">Upload Avatar</button>-->
+<!--            </div>-->
             <h2 class="card-title">User Details</h2>
             <!-- User Details -->
             <div class="user-details">
               <p>Username : {{username}} </p>
               <p>Role : {{role}} </p>
+              <p>Rating : {{ this.volunteerDetails.rating }}</p>
+
               <!-- Add user details here -->
             </div>
           </div>
@@ -42,7 +54,7 @@
         </div>
 
         <div class="card-body">
-          <h2 class="card-title"> <button (click)="changeVolunteerLayout('rate')" >Rate volunteer</button></h2>
+          <h2 class="card-title"> <button (click)="changeVolunteerLayout('rate')" >Rate Organizations</button></h2>
           <!-- Volunteer Package Info -->
           <div class="volunteer-package-info">
             <!-- Add information about volunteer package here -->
@@ -129,8 +141,8 @@
               <input id="newPassword" formControlName="newPassword" type="password" class="form-control" />
             </div>
             <div class="form-group">
-              <label for="confirmPassword">Confirm New Password:</label>
-              <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-control" />
+              <label for="confirmationPassword">Confirm New Password:</label>
+              <input id="confirmationPassword" formControlName="confirmationPassword" type="password" class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary">Change Password</button>
           </form>
@@ -185,9 +197,9 @@
             <!-- Other organization details input fields -->
 
             <div class="form-group">
-              <label for="volunteer">Select Organization:</label>
-              <select class="form-control" id="organization" formControlName="volunteer">
-                <option *ngFor="let volunteer of organizationVolunteers" [value]="volunteer.volunteerId">{{ volunteer.user?.username }}</option>
+              <label for="organization">Select Organization:</label>
+              <select class="form-control" id="organization" formControlName="organization">
+                <option *ngFor="let organization of volunteersAppliedOrganizations" [value]="organization.organizationId">{{ organization.name }}</option>
               </select>
             </div>
 
@@ -204,7 +216,7 @@
 
             <div class="form-group">
               <label for="feedback">Feedback:</label>
-              <textarea class="form-control" id="volunteerFeedback" formControlName="feedback"></textarea>
+              <textarea class="form-control" id="organizationFeedback" formControlName="feedback"></textarea>
             </div>
 
             <br>

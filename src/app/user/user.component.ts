@@ -2,12 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../services/user/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { Event } from "../services/models/event";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {User} from "../services/models/user";
 import {Volunteer} from "../services/models/volunteer";
 import {Organization} from "../services/models/organization";
 import {Router} from "@angular/router";
-import {CreateRating} from "../services/models/create-rating";
+import {MessageService} from "primeng/api";
+import {TokenService} from "../services/token/token.service";
+import {catchError, throwError} from "rxjs";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user',
@@ -15,6 +18,10 @@ import {CreateRating} from "../services/models/create-rating";
   styleUrl: './user.component.css'
 })
 export class UserComponent implements OnInit{
+
+
+  selectedFile: File | null = null;
+  avatarUrl: SafeUrl | null = null;
   role: string;
   username: string;
 
@@ -25,6 +32,8 @@ export class UserComponent implements OnInit{
   ratingPageByVolunteer: boolean;
 
   volunteerRatingForm: FormGroup;
+  volunteersAppliedOrganizations: Organization[] = [];
+
 
   // organization pages navigation
   organizationProfile: boolean;
@@ -79,6 +88,9 @@ export class UserComponent implements OnInit{
     private http: HttpClient,
     private formBuilder: FormBuilder,
     private router: Router,
+    private messageService: MessageService,
+    private tokenService: TokenService,
+    private sanitizer: DomSanitizer
 
   ) {
     this.username = userService.username;
@@ -162,33 +174,69 @@ export class UserComponent implements OnInit{
     this.changePasswordForm = this.fb.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required]
+      confirmationPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
 
     this.loadUserEvents();
-
-
-
   }
 
   passwordMatchValidator(form: FormGroup) {
-    return form.get('newPassword')?.value === form.get('confirmPassword')?.value
+    return form.get('newPassword')?.value === form.get('confirmationPassword')?.value
       ? null : { mismatch: true };
   }
 
 
   onSubmitPassword(): void {
+    console.log(this.changePasswordForm)
     if (this.changePasswordForm.valid) {
       const formData = this.changePasswordForm.value;
-      console.log('Form Data:', formData);
+      console.log(formData)
+
+
+      const token = this.tokenService.accessToken;
+      console.log(token);
+
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const options = { headers: headers };
+
+      this.http.patch('http://localhost:8080/api/v1/user', formData, options).pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error occurred:', error);
+          this.messageService.add(
+            {
+              severity: 'error',
+              detail: error.error.error
+            }
+          )
+          // Handle specific error messages here
+          if (error.status === 400) {
+            // Display or log the error message
+            console.error('Bad Request:', error.error);
+          }
+          return throwError(error);
+        })
+
+      )
+        .subscribe(
+        (response) => {
+          console.log(response);
+          this.messageService.add(
+            {
+              severity: 'success',
+              detail: 'Password change was successfully'
+            }
+          )
+        }
+      )
       // Handle form submission, e.g., send data to the server
     } else {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Not same passwords'
+      })
       console.log('Form is invalid');
     }
   }
-
-
-
 
   volunteer = {
     "id": 1,
@@ -232,6 +280,10 @@ export class UserComponent implements OnInit{
           console.log(response);
         }
       )
+      this.messageService.add({
+        severity: 'info',
+        detail: 'Update successfully changed'
+      })
 
       this.profileForm.patchValue(userData);
 
@@ -302,6 +354,7 @@ export class UserComponent implements OnInit{
 
     }
     if (layout === 'rate'){
+      this.loadVolunteerOrganizations();
       this.volunteerEvents = false;
       this.userSettings = false;
       this.myProfile = false;
@@ -393,6 +446,10 @@ export class UserComponent implements OnInit{
       formData.owner = this.myOrganization.owner;
       this.http.put('http://localhost:8080/api/v1/organization', formData).subscribe(
         (response) => {
+          this.messageService.add({
+            severity: 'info',
+            detail: 'Update successfully changed'
+          })
           this.organizationForm.patchValue(response);
         }
       )
@@ -426,16 +483,6 @@ export class UserComponent implements OnInit{
       }
     );
   }
-
-
-  // loadOrganizationEvents(){
-  //   this.http.get<Event[]>("http://localhost:8080/api/v1/event-registration/event/username/" + this.username).subscribe(
-  //     response => {
-  //       console.log(response);
-  //       this.events = response;
-  //     }
-  //   )
-  // }
 
 
   createEventByOrganization() {
@@ -478,8 +525,7 @@ export class UserComponent implements OnInit{
     this.http.delete(`http://localhost:8080/api/v1/event/event/${eventId}`).subscribe(
       (response) => {
         console.log(response);
-        this.loadEvents()
-      }
+        this.loadOrganizationEventList(this.myOrganization.organizationId as number)      }
     )
   }
 
@@ -487,8 +533,7 @@ export class UserComponent implements OnInit{
     this.http.get(`http://localhost:8080/api/v1/event/event/${eventId}`).subscribe(
       (response) => {
         console.log(response);
-        this.loadEvents()
-      }
+        this.loadOrganizationEventList(this.myOrganization.organizationId as number)      }
     )
   }
 
@@ -542,8 +587,6 @@ export class UserComponent implements OnInit{
         this.organizationVolunteers = response;
       }
     )
-
-
   }
 
   rateVolunteerByOrganization() {
@@ -551,20 +594,109 @@ export class UserComponent implements OnInit{
       const formData = {
         volunteerRating : this.organizationRatingForm.get('rating')?.value,
         volunteerId: this.organizationRatingForm.get('volunteer')?.value,
-        feedback: this.organizationRatingForm.get('feedback')?.value,
+        volunteerFeedback: this.organizationRatingForm.get('feedback')?.value,
         organizationId: this.myOrganization.organizationId,
       };
       console.log(formData);
-
       this.http.post("http://localhost:8080/api/v1/rating", formData).subscribe(
         (response) => {
           console.log(response)
+          this.messageService.add(
+            {
+              severity: "success",
+              summary: 'Rating is successfully added'
+
+            }
+          )
+
         }
       )
     }
   }
 
   rateOrganizationByVolunteer() {
+    console.log("works");
+    if (this.volunteerRatingForm.valid) {
+      console.log("validated");
+      const formData = {
+        organizationRating : this.volunteerRatingForm.get('rating')?.value,
+        organizationId: this.volunteerRatingForm.get('organization')?.value,
+        organizationFeedback: this.volunteerRatingForm.get('feedback')?.value,
+        volunteerId: this.volunteer.id,
+      }
+      // this.volunteerRatingForm = this.fb.group({
+      //   organization: ['', Validators.required],
+      //   rating: ['', Validators.required],
+      //   feedback: ['', Validators.required],
+      // })
+      console.log(formData);
 
+      this.http.post("http://localhost:8080/api/v1/rating", formData).subscribe(
+        (response) => {
+          console.log(response);
+          this.messageService.add(
+            {
+              severity: "success",
+              summary: 'Rating is successfully added'
+
+            }
+          )
+        }
+      )
+    }
   }
+  loadVolunteerOrganizations(){
+
+    this.http.get<Organization[]>("http://localhost:8080/api/v1/event-registration/organization/volunteer/" + this.username).subscribe(
+      (response) => {
+        this.volunteersAppliedOrganizations = response;
+      }
+    )
+  }
+
+  // onFileSelected(event: any): void {
+  //   this.selectedFile = event.target.files[0];
+  //   this.previewAvatar();
+  // }
+  //
+  // previewAvatar(): void {
+  //   if (this.selectedFile) {
+  //     const objectUrl = URL.createObjectURL(this.selectedFile);
+  //     this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+  //   }
+  // }
+  //
+  // loadUserAvatar(): void {
+  //   this.userService.getAvatar().subscribe(
+  //     (response) => {
+  //       const objectUrl = URL.createObjectURL(response);
+  //       this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+  //     },
+  //     (error) => {
+  //       console.error('Error loading avatar:', error);
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load avatar' });
+  //     }
+  //   );
+  // }
+  //
+  // onUpload(): void {
+  //   if (this.selectedFile) {
+  //
+  //     this.userService.uploadAvatar(this.selectedFile).subscribe(
+  //       (response) => {
+  //         console.log('Upload successful:', response);
+  //         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Avatar uploaded successfully' });
+  //         this.loadUserAvatar();
+  //       },
+  //       (error) => {
+  //         console.error('Upload error:', error);
+  //         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to upload avatar' });
+  //       }
+  //     );
+  //   } else {
+  //     console.warn('No file selected');
+  //     this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please select a file' });
+  //   }
+  // }
+
 }

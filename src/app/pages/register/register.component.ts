@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import {AuthenticationRequest} from "../../services/models/authentication-request";
 import {RegisterRequest} from "../../services/models/register-request";
-import {Router} from "@angular/router";
+import {  Router} from "@angular/router";
 import {AuthenticationControllerService} from "../../services/services/authentication-controller.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenService} from "../../services/token/token.service";
 import {UserService} from "../../services/user/user.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-register',
@@ -15,8 +16,10 @@ import {UserService} from "../../services/user/user.service";
 export class RegisterComponent {
   registerRequest: RegisterRequest = {username: '', password: '', role: "VOLUNTEER"};
   errorMsg: Array<string> = [];
+  // messageService: inject(MessageService);
 
   constructor(
+    private messageService: MessageService,
     private router: Router,
     private authService: AuthenticationControllerService,
     private tokenService: TokenService,
@@ -45,6 +48,13 @@ export class RegisterComponent {
         this.tokenService.refreshToken = response.refreshToken as string;
         this.userService.username = this.registerRequest.username;
         this.userService.role = this.registerRequest.role as string;
+        this.messageService.add(
+          {
+            severity: 'success',
+            summary: 'User registered',
+            detail: ''
+          }
+        )
 
         this.router.navigate(['/']);
 

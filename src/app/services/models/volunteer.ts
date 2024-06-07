@@ -13,6 +13,7 @@ export interface Volunteer {
   birthday?: string;
   gender?: string;
   experienceMonth?: number;
+  rating?: number;
 }
 
 

@@ -29,6 +29,10 @@
     </select>
   </div>
   <div class="mb-3">
+    <label for="link" class="form-label">Link to event</label>
+    <input type="text" id="link" formControlName="link" class="form-control">
+  </div>
+  <div class="mb-3">
     <label for="city" class="form-label">City</label>
     <select id="city" formControlName="city" class="form-select">
       <option *ngFor="let city of cities" value="{{city}}">{{city}}</option>

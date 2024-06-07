@@ -21,4 +21,9 @@ export class TokenService {
   get refreshToken() {
     return localStorage.getItem('refresh_token') as string;
   }
+
+  deleteCache() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+  }
 }

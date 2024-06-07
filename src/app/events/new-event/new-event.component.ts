@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import { Event} from "../../services/models/event";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-new-event',
@@ -17,6 +18,7 @@ export class NewEventComponent implements OnInit{
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
+    private messageService: MessageService,
               ) {
     this.eventForm = this.formBuilder.group({
       eventName: ['', Validators.required],
@@ -39,6 +41,7 @@ export class NewEventComponent implements OnInit{
       eventEndDate: ['', Validators.required],
       eventType: ['', Validators.required],
       city: ['', Validators.required],
+      link: ['', Validators.required]
       // organization: [{}, Validators.required]
     });
   }
@@ -55,7 +58,13 @@ export class NewEventComponent implements OnInit{
       this.http.post("http://localhost:8080/api/v1/event/guest", formData).subscribe(
         (response) => {
           console.log(response);
-          this.router.navigate(['events'])
+          this.messageService.add(
+            {
+              severity: "success",
+              detail: 'Event successfully added'
+            }
+          )
+          this.router.navigate(['events']);
         }
       )
       // Call your service method to create the event using formData

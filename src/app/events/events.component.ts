@@ -120,12 +120,14 @@ export class EventsComponent {
   }
 
   loadVolunteerData(){
-    this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.userService.username}`).subscribe(
-      (response) => {
-        this.volunteer = response;
-        this.loadVolunteerEvents()
-      }
-    );
+    if (this.userService.username != null){
+      this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.userService.username}`).subscribe(
+        (response) => {
+          this.volunteer = response;
+          this.loadVolunteerEvents()
+        }
+      );
+    }
   }
 
   loadVolunteerEvents(){

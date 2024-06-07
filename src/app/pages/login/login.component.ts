@@ -6,6 +6,7 @@ import {TokenService} from "../../services/token/token.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../services/models/user";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent {
   errorMsg: Array<string> = [];
 
   constructor(
+    private messageService: MessageService,
     private router: Router,
     private authService: AuthenticationControllerService,
     private tokenService: TokenService,
@@ -53,6 +55,14 @@ export class LoginComponent {
           }
         )
         this.userService.username = this.authRequest.username;
+        this.messageService.add(
+          {
+            severity: 'info',
+            summary: 'User authenticated successfully',
+            detail: `${this.userService.username} is authenticated`,
+          }
+        )
+
         this.router.navigate(['events']);
         },
       error => {
