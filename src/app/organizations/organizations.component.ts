@@ -10,6 +10,8 @@ import {HttpClient} from "@angular/common/http";
   styleUrl: './organizations.component.css'
 })
 export class OrganizationsComponent{
+  p: number = 1;
+
 
   events: Array<Event> = [];
   staticEvents: Array<Event> = [];

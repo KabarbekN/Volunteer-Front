@@ -13,6 +13,7 @@ import {UserService} from "../services/user/user.service";
 })
 export class EventsComponent {
 
+  p: number = 1;
   events: Array<Event>;
   staticEvents: Array<Event>;
   eventControl = new FormControl();

@@ -68,10 +68,23 @@ export class LoginComponent {
       error => {
         if (error.error.validationErrors) {
           this.errorMsg = error.error.validationErrors;
+          this.messageService.add(
+            {
+              severity: 'error',
+              detail: this.errorMsg.toString(),
+            }
+          )
         } else {
           this.errorMsg.push(
             error.error.error
           );
+
+          this.messageService.add(
+            {
+              severity: 'error',
+              detail: error.error.error,
+            }
+          )
         }
       }
     );

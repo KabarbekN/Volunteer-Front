@@ -13,4 +13,6 @@ export interface Organization {
   owner?: User;
   phone?: string;
   isApproved?: boolean;
+  rating?: number;
+  numberOfRates?: number;
 }

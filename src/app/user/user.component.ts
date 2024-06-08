@@ -298,6 +298,7 @@ export class UserComponent implements OnInit{
     this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
       (response) => {
         this.volunteerDetails = response;
+        console.log(response);
       }
     )
   }
@@ -305,11 +306,11 @@ export class UserComponent implements OnInit{
   loadUserData(): void {
     let userData  = {};
 
-      this.http.get<User>(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
+      this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
       (response) => {
         console.log(response);
         userData = response;
-        // this.volunteerDetails = response;
+        this.volunteerDetails = response;
         this.profileForm.patchValue(userData);
 
       }
@@ -423,12 +424,22 @@ export class UserComponent implements OnInit{
   loadOrganizationByUsername(){
     this.http.get<Organization>("http://localhost:8080/api/v1/organization/username/" + this.username).subscribe(
       (response) => {
-        this.myOrganization = response;
-        this.loadOrganizationEventList(response.organizationId as number);
-        this.organizationForm.patchValue(this.myOrganization);
+        if (response) {
+          this.myOrganization = response;
+          if (response.organizationId != null){
+            this.loadOrganizationEventList(response.organizationId as number);
+            this.organizationForm.patchValue(this.myOrganization);
+          }
+        } else {
+          // console.error("No organization found for the provided username.");
+        }
+      },
+      (error) => {
+        // console.error("An error occurred while fetching the organization:", error);
       }
-    )
+    );
   }
+
 
   loadOrganizationEventList(organizationId : number){
     this.http.get<Event[]>(`http://localhost:8080/api/v1/event/organization/${organizationId}`).subscribe(

@@ -22,6 +22,15 @@ import { OrganizationDetailComponent } from './organizations/organization-detail
 
 import { MessageService } from "primeng/api";
 import {ToastModule} from "primeng/toast";
+import {InputTextModule} from "primeng/inputtext";
+import {Button, ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
+import {TableModule} from "primeng/table";
+import {PaginatorModule} from "primeng/paginator";
+import {NgxPaginationModule} from "ngx-pagination";
+import {SplitterModule} from "primeng/splitter";
+import { NotfoundComponent } from './components/notfound/notfound.component';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +45,8 @@ import {ToastModule} from "primeng/toast";
     UserComponent,
     NewEventComponent,
     OrganizationDetailComponent,
+    NotfoundComponent,
+    ConfirmationComponent,
 
   ],
   imports: [
@@ -47,6 +58,14 @@ import {ToastModule} from "primeng/toast";
     MatSelectModule,
     ReactiveFormsModule,
     ToastModule,
+    InputTextModule,
+    ButtonDirective,
+    Ripple,
+    TableModule,
+    PaginatorModule,
+    NgxPaginationModule,
+    SplitterModule,
+    Button,
 
   ],
   providers: [

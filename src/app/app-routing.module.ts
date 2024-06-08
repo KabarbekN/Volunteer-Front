@@ -9,6 +9,8 @@ import {AboutComponent} from "./about/about.component";
 import {UserComponent} from "./user/user.component";
 import {NewEventComponent} from "./events/new-event/new-event.component";
 import {OrganizationDetailComponent} from "./organizations/organization-detail/organization-detail.component";
+import {NotfoundComponent} from "./components/notfound/notfound.component";
+import {ConfirmationComponent} from "./components/confirmation/confirmation.component";
 
 const routes: Routes = [
   {
@@ -44,8 +46,20 @@ const routes: Routes = [
     component: NewEventComponent
   },
   {
-    path: 'organizations/organization-detail',
+    path: 'organizations/organization-detail/:organizationId',
     component: OrganizationDetailComponent,
+  },
+  {
+    path: 'confirmation',
+    component: ConfirmationComponent,
+  },
+  {
+    path: 'not-found',
+    component: NotfoundComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/not-found'
   }
 ];
 

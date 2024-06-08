@@ -14,7 +14,7 @@ import {MessageService} from "primeng/api";
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  registerRequest: RegisterRequest = {username: '', password: '', role: "VOLUNTEER"};
+  registerRequest: RegisterRequest = {username: '', password: '', role: "VOLUNTEER", email: ''};
   errorMsg: Array<string> = [];
   // messageService: inject(MessageService);
 
@@ -56,17 +56,29 @@ export class RegisterComponent {
           }
         )
 
-        this.router.navigate(['/']);
+        this.router.navigate(['events']);
 
 
       },
       error => {
         if (error.error.validationErrors) {
           this.errorMsg = error.error.validationErrors;
+          this.messageService.add(
+            {
+              severity: 'error',
+              detail: this.errorMsg.toString(),
+            }
+          )
         } else {
           this.errorMsg.push(
             error.error.error
           );
+          this.messageService.add(
+            {
+              severity: 'error',
+              detail: error.error.error,
+            }
+          )
         }
       }
     );
