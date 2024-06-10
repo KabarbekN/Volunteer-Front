@@ -16,7 +16,7 @@
     <div class="col-md-9">
       <div class="organizations-list">
         <h1>Organizations</h1>
-        <div *ngFor="let organization of organizations | paginate: {itemsPerPage: 2, currentPage: p}" class="organization">
+        <div *ngFor="let organization of organizations | paginate: {itemsPerPage: 3, currentPage: p}" class="organization">
           <h2>{{ organization.name }}</h2>
           <p><strong>Address:</strong> {{ organization.address }}</p>
           <p><strong>Phone:</strong> {{ organization.phone }}</p>

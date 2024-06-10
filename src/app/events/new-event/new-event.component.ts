@@ -47,14 +47,13 @@ export class NewEventComponent implements OnInit{
   }
 
   onSubmit(): void {
-    console.log('submit works')
+
     if (this.eventForm.valid) {
 
       const formData = this.eventForm.value as Event;
       formData.eventStartDate = new Date(formData.eventStartDate).getTime();
       formData.eventEndDate = new Date(formData.eventEndDate).getTime();
       formData.organization = {};
-      // console.log(formData.organization = {});
       this.http.post("http://localhost:8080/api/v1/event/guest", formData).subscribe(
         (response) => {
           console.log(response);
@@ -69,8 +68,12 @@ export class NewEventComponent implements OnInit{
       )
       // Call your service method to create the event using formData
     } else {
-      // Handle form validation errors
-    }
+      this.messageService.add(
+        {
+          severity: "error",
+          detail: 'Form is not valid, fill all fields.',
+        }
+      )    }
   }
 
   loadCities(){

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {TokenService} from "./services/token/token.service";
 import {UserService} from "./services/user/user.service";
 import {Router} from "@angular/router";
@@ -41,4 +41,6 @@ export class AppComponent implements OnInit{
     this.userService.role$.subscribe(role => this.role = role);
     // this.primengConfig.tripple();
   }
+
+
 }

@@ -11,8 +11,13 @@ import {NewEventComponent} from "./events/new-event/new-event.component";
 import {OrganizationDetailComponent} from "./organizations/organization-detail/organization-detail.component";
 import {NotfoundComponent} from "./components/notfound/notfound.component";
 import {ConfirmationComponent} from "./components/confirmation/confirmation.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
   {
     path: 'login',
     component: LoginComponent,

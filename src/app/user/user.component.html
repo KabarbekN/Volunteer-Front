@@ -2,8 +2,6 @@
 
 <div class="container" *ngIf="role === 'VOLUNTEER'">
   <div class="row">
-
-
     <div class="col-md-4">
       <div class="card">
         <div class="card mb-4">
@@ -30,6 +28,27 @@
             </div>
           </div>
         </div>
+        <div class="card-body">
+<!--          <p-tree class="w-full md:w-30rem" [value]="userTreeNode">-->
+<!--            <ng-template let-node pTemplate="default">-->
+<!--              <span *ngIf="node.data.type === 'profile'">-->
+<!--                <button (click)="changeVolunteerLayout(node.data.type)"></button>-->
+<!--              </span>-->
+
+<!--              <span *ngIf="node.data.type === 'settings'">-->
+<!--                <button (click)="changeVolunteerLayout(node.data.type)">{{ node.label }}</button>-->
+<!--            </span>-->
+<!--              <span *ngIf="node.data.type === 'eventList'">-->
+<!--                <button (click)="changeVolunteerLayout(node.data.type)">{{ node.label }}</button>-->
+<!--            </span>-->
+<!--              <span *ngIf="node.data.type === 'rate'">-->
+<!--             <button (click)="changeVolunteerLayout(node.data.type)">{{ node.label }}</button>-->
+<!--             </span>-->
+<!--            </ng-template>-->
+<!--          </p-tree>-->
+
+        </div>
+
         <div class="card-body">
           <h2 class="card-title" > <button (click)="changeVolunteerLayout('profile')" >My profile </button></h2>
           <!-- Volunteer Package Info -->
@@ -191,15 +210,9 @@
         [paginator]="true"
         [rows]="5"
         [tableStyle]="{ 'min-width': '50rem' }"
-        [rowsPerPageOptions]="[5, 10, 20]"
-      >
+        [rowsPerPageOptions]="[5, 10, 20]">
         <ng-template pTemplate="header">
           <tr>
-<!--            <th style="width:25%">Name</th>-->
-<!--            <th style="width:25%">Country</th>-->
-<!--            <th style="width:25%">Company</th>-->
-<!--            <th style="width:25%">Representative</th>-->
-
             <th style="width:11%">Event Name</th>
             <th style="width:11%">Location</th>
             <th style="width:11%">City</th>
@@ -209,8 +222,6 @@
             <th style="width:11%">Type</th>
             <th style="width:11%">Description</th>
             <th style="width:11%">Unapply</th>
-
-
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-event>

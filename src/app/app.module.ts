@@ -31,6 +31,9 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {SplitterModule} from "primeng/splitter";
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import { HomeComponent } from './home/home.component';
+import {NgOptimizedImage} from "@angular/common";
+import {TreeModule} from "primeng/tree";
 
 @NgModule({
   declarations: [
@@ -47,6 +50,7 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
     OrganizationDetailComponent,
     NotfoundComponent,
     ConfirmationComponent,
+    HomeComponent,
 
   ],
   imports: [
@@ -66,6 +70,8 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
     NgxPaginationModule,
     SplitterModule,
     Button,
+    NgOptimizedImage,
+    TreeModule,
 
   ],
   providers: [

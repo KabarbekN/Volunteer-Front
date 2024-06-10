@@ -63,7 +63,7 @@ export class LoginComponent {
           }
         )
 
-        this.router.navigate(['events']);
+        this.router.navigate(['home']);
         },
       error => {
         if (error.error.validationErrors) {
