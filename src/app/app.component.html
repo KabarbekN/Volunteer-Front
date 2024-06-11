@@ -36,7 +36,7 @@
             <p>Role: {{ role }}</p>
           </button>
           <button *ngIf="!checkToken()" class="logout-btn" (click)="logoutHandler()">
-            <img style="height: 50px; width: 50px" src="../assets/icons/logout.png" alt="Logout">
+            <img style="height: 35px; width: 35px" src="../assets/icons/logout.png" alt="Logout">
           </button>
           <button *ngIf="checkToken()" type="button" class="btn btn-outline-black me-2 login-btn" routerLink="login">Login</button>
           <button *ngIf="checkToken()" type="button" class="btn btn register-btn" routerLink="register">Sign-up</button>

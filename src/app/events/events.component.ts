@@ -5,6 +5,7 @@ import {EventControllerService} from "../services/services/event-controller.serv
 import {HttpClient} from "@angular/common/http";
 import {City, Volunteer} from "../services/models/volunteer";
 import {UserService} from "../services/user/user.service";
+import {API_URL} from "../core/util/consts";
 
 @Component({
   selector: 'app-events',
@@ -81,7 +82,7 @@ export class EventsComponent {
   }
 
   loadEvents(){
-    this.http.get<Event[]>("http://localhost:8080/api/v1/event/").subscribe(
+    this.http.get<Event[]>(API_URL + "/api/v1/event/").subscribe(
         (response) => {
           this.events = response;
           this.staticEvents = response;
@@ -93,13 +94,12 @@ export class EventsComponent {
             //   this.cities.push(event.city as string);
             // }
           });
-
         },
         // error => console.log(error)
     );
   }
   loadCities(){
-    this.http.get<string[]>("http://localhost:8080/api/v1/city/").subscribe(
+    this.http.get<string[]>(API_URL +"/api/v1/city/").subscribe(
       (response) => {
         this.cities = response;
       }
@@ -111,7 +111,7 @@ export class EventsComponent {
   applyToEvent(eventId : number) {
     console.log(this.volunteer);
 
-        const url = `http://localhost:8080/api/v1/event-registration/register?eventId=${eventId}&volunteerId=${this.volunteer.volunteerId}`;
+        const url = API_URL + `/api/v1/event-registration/register?eventId=${eventId}&volunteerId=${this.volunteer.volunteerId}`;
         this.http.post(url, this.volunteer).subscribe(
           (response) => {
               console.log(response);
@@ -122,7 +122,7 @@ export class EventsComponent {
 
   loadVolunteerData(){
     if (this.userService.username != null){
-      this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.userService.username}`).subscribe(
+      this.http.get<Volunteer>(`${API_URL}/api/v1/volunteer/username?username=${this.userService.username}`).subscribe(
         (response) => {
           this.volunteer = response;
           this.loadVolunteerEvents()
@@ -132,7 +132,7 @@ export class EventsComponent {
   }
 
   loadVolunteerEvents(){
-    this.http.get<Event[]>(`http://localhost:8080/api/v1/event-registration/volunteer/${this.volunteer.volunteerId}`).subscribe(
+    this.http.get<Event[]>(`${API_URL}/api/v1/event-registration/volunteer/${this.volunteer.volunteerId}`).subscribe(
       (response) => {
         this.registeredEvents = response;
         console.log(this.registeredEvents);
@@ -154,7 +154,7 @@ export class EventsComponent {
 
     console.log(this.volunteer);
 
-    const url = `http://localhost:8080/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${this.volunteer.volunteerId}`;
+    const url = `${API_URL}/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${this.volunteer.volunteerId}`;
     this.http.delete(url).subscribe(
       (response) => {
         console.log(response);

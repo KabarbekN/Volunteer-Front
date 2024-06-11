@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import { Event} from "../../services/models/event";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
+import {API_URL} from "../../core/util/consts";
 
 @Component({
   selector: 'app-new-event',
@@ -54,7 +55,7 @@ export class NewEventComponent implements OnInit{
       formData.eventStartDate = new Date(formData.eventStartDate).getTime();
       formData.eventEndDate = new Date(formData.eventEndDate).getTime();
       formData.organization = {};
-      this.http.post("http://localhost:8080/api/v1/event/guest", formData).subscribe(
+      this.http.post(API_URL + "/api/v1/event/guest", formData).subscribe(
         (response) => {
           console.log(response);
           this.messageService.add(
@@ -77,7 +78,7 @@ export class NewEventComponent implements OnInit{
   }
 
   loadCities(){
-    this.http.get<string[]>("http://localhost:8080/api/v1/city/").subscribe(
+    this.http.get<string[]>( API_URL + "/api/v1/city/").subscribe(
       (response) => {
         this.cities = response;
       }

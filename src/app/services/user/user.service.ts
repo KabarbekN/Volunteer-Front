@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {MessageService} from "primeng/api";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {API_URL} from "../../core/util/consts";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private apiUrl = 'http://localhost:8080/api/v1/user';
+  private apiUrl = API_URL + '/api/v1/user';
 
   messageService = inject(MessageService);
   private usernameSubject = new BehaviorSubject<string>(this.username);

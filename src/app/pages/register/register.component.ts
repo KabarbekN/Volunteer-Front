@@ -7,6 +7,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenService} from "../../services/token/token.service";
 import {UserService} from "../../services/user/user.service";
 import {MessageService} from "primeng/api";
+import {API_URL} from "../../core/util/consts";
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,7 @@ export class RegisterComponent {
   register() {
     this.errorMsg = [];
 
-    const url = 'http://localhost:8080/api/v1/auth/register'; // Replace with your API endpoint
+    const url = API_URL + '/api/v1/auth/register'; // Replace with your API endpoint
 
     const data = this.registerRequest;// Data to be sent in the request body
 

@@ -7,6 +7,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../services/models/user";
 import {MessageService} from "primeng/api";
+import {API_URL} from "../../core/util/consts";
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent {
   postData() {
     this.errorMsg = [];
 
-    const url = 'http://localhost:8080/api/v1/auth/authenticate'; // Replace with your API endpoint
+    const url = API_URL + '/api/v1/auth/authenticate'; // Replace with your API endpoint
 
     const data = this.authRequest;// Data to be sent in the request body
 
@@ -49,7 +50,7 @@ export class LoginComponent {
         console.log(response.access_token as string);
         this.tokenService.accessToken = response.access_token as string;
         this.tokenService.refreshToken = response.refreshToken as string;
-        this.http.get<User>(`http://localhost:8080/api/v1/user/username/${this.authRequest.username}`).subscribe(
+        this.http.get<User>(`${API_URL}/api/v1/user/username/${this.authRequest.username}`).subscribe(
           response => {
             this.userService.role = response.role as string;
           }

@@ -16,8 +16,5 @@ export class ConfirmationComponent implements OnInit{
     setTimeout(() => {
       this.router.navigate(['/events']);
     }, 3000); // 3000 milliseconds = 3 seconds
-
   }
-
-
 }

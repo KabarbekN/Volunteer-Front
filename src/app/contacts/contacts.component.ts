@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
+import {API_URL} from "../core/util/consts";
 
 @Component({
   selector: 'app-contacts',
@@ -29,7 +30,7 @@ export class ContactsComponent {
       detail: 'Your message has been sent.'
     });
 
-    this.http.post('http://localhost:8080/api/v1/email', formData).subscribe(
+    this.http.post( API_URL + '/api/v1/email', formData).subscribe(
     (response) => {
       console.log(response)
     }

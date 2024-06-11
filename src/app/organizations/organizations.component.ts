@@ -3,6 +3,7 @@ import {Organization} from "../services/models/organization";
 import {Event} from "../services/models/event";
 import {FormControl} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {API_URL} from "../core/util/consts";
 
 @Component({
   selector: 'app-organizations',
@@ -44,7 +45,7 @@ export class OrganizationsComponent{
   }
 
   loadOrganizations(): void {
-    this.http.get<Organization[]>("http://localhost:8080/api/v1/organization/").subscribe(
+    this.http.get<Organization[]>(API_URL + "/api/v1/organization/").subscribe(
       (response) => {
         this.organizations = response;
         this.staticOrganizations = response;
@@ -53,7 +54,7 @@ export class OrganizationsComponent{
   }
 
   loadCities(){
-    this.http.get<string[]>("http://localhost:8080/api/v1/city/").subscribe(
+    this.http.get<string[]>(API_URL + "/api/v1/city/").subscribe(
       (response) => {
         // this.cities = response;
         response.forEach(cities => {

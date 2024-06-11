@@ -11,6 +11,7 @@ import {MessageService, TreeNode} from "primeng/api";
 import {TokenService} from "../services/token/token.service";
 import {catchError, throwError} from "rxjs";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {API_URL} from "../core/util/consts";
 
 @Component({
   selector: 'app-user',
@@ -215,7 +216,7 @@ export class UserComponent implements OnInit{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       const options = { headers: headers };
 
-      this.http.patch('http://localhost:8080/api/v1/user', formData, options).pipe(
+      this.http.patch(API_URL + '/api/v1/user', formData, options).pipe(
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(
             {
@@ -266,7 +267,7 @@ export class UserComponent implements OnInit{
   }
 
   loadCities(){
-    this.http.get<string[]>("http://localhost:8080/api/v1/city/").subscribe(
+    this.http.get<string[]>(API_URL + "/api/v1/city/").subscribe(
       (response) => {
         this.cities = response;
       }
@@ -279,7 +280,7 @@ export class UserComponent implements OnInit{
       let userData  = {};
       formData.volunteerId = this.volunteerDetails.volunteerId;
       formData.user = this.volunteerDetails.user;
-      this.http.put("http://localhost:8080/api/v1/volunteer", formData).subscribe(
+      this.http.put(API_URL + "/api/v1/volunteer", formData).subscribe(
         (response) => {
           console.log(response);
           this.messageService.add({
@@ -296,7 +297,7 @@ export class UserComponent implements OnInit{
   }
 
   loadVolunteerData () {
-    this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
+    this.http.get<Volunteer>(`${API_URL}/api/v1/volunteer/username?username=${this.username}`).subscribe(
       (response) => {
         this.volunteerDetails = response;
         console.log(response);
@@ -307,7 +308,7 @@ export class UserComponent implements OnInit{
   loadUserData(): void {
     let userData  = {};
 
-      this.http.get<Volunteer>(`http://localhost:8080/api/v1/volunteer/username?username=${this.username}`).subscribe(
+      this.http.get<Volunteer>(`${API_URL}/api/v1/volunteer/username?username=${this.username}`).subscribe(
       (response) => {
         console.log(response);
         userData = response;
@@ -356,7 +357,7 @@ export class UserComponent implements OnInit{
   }
 
   loadUserEvents(){
-    this.http.get<Event[]>("http://localhost:8080/api/v1/event-registration/event/username/" + this.username).subscribe(
+    this.http.get<Event[]>(API_URL + "/api/v1/event-registration/event/username/" + this.username).subscribe(
       response => {
         this.events = response;
       }
@@ -455,7 +456,7 @@ export class UserComponent implements OnInit{
   }
 
   loadOrganizationByUsername(){
-    this.http.get<Organization>("http://localhost:8080/api/v1/organization/username/" + this.username).subscribe(
+    this.http.get<Organization>(API_URL + "/api/v1/organization/username/" + this.username).subscribe(
       (response) => {
         if (response) {
           this.myOrganization = response;
@@ -469,7 +470,7 @@ export class UserComponent implements OnInit{
   }
 
   loadOrganizationEventList(organizationId : number){
-    this.http.get<Event[]>(`http://localhost:8080/api/v1/event/organization/${organizationId}`).subscribe(
+    this.http.get<Event[]>(`${API_URL}/api/v1/event/organization/${organizationId}`).subscribe(
       (response) => {
         this.organizationEventsList = response;
       }
@@ -481,7 +482,7 @@ export class UserComponent implements OnInit{
       const formData = this.organizationForm.value as Organization;
       formData.organizationId = this.myOrganization.organizationId;
       formData.owner = this.myOrganization.owner;
-      this.http.put('http://localhost:8080/api/v1/organization', formData).subscribe(
+      this.http.put(`${API_URL}/api/v1/organization`, formData).subscribe(
         (response) => {
           this.messageService.add({
             severity: 'info',
@@ -502,7 +503,7 @@ export class UserComponent implements OnInit{
 
     console.log(this.volunteer);
 
-    const url = `http://localhost:8080/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${this.volunteerDetails.volunteerId}`;
+    const url = `${API_URL}/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${this.volunteerDetails.volunteerId}`;
     this.http.delete(url).subscribe(
       (response) => {
         console.log(response);
@@ -515,7 +516,7 @@ export class UserComponent implements OnInit{
 
     console.log(this.volunteer);
 
-    const url = `http://localhost:8080/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${volunteerId}`;
+    const url = `${API_URL}/api/v1/event-registration/unregister?eventId=${eventId}&volunteerId=${volunteerId}`;
     this.http.delete(url).subscribe(
       (response) => {
         console.log(response);
@@ -539,7 +540,7 @@ export class UserComponent implements OnInit{
         link: this.eventForm.get('link')?.value,
         organization: this.myOrganization,
       };
-      this.http.post("http://localhost:8080/api/v1/event", formData).subscribe(
+      this.http.post(`${API_URL}/api/v1/event`, formData).subscribe(
         (response) => {
           this.messageService.add({
             severity: 'success',
@@ -556,29 +557,29 @@ export class UserComponent implements OnInit{
   }
 
   deactivateEvent(eventId: number) {
-    this.http.delete(`http://localhost:8080/api/v1/event/event/${eventId}`).subscribe(
+    this.http.delete(`${API_URL}/api/v1/event/event/${eventId}`).subscribe(
       (response) => {
         this.messageService.add({
           severity: 'success',
           detail: 'Event deactivated'
         })
-        this.loadOrganizationEventList(this.myOrganization.organizationId as number)      }
+        this.loadOrganizations()      }
     )
   }
 
   activateEvent(eventId: number) {
-    this.http.get(`http://localhost:8080/api/v1/event/event/${eventId}`).subscribe(
+    this.http.get(`${API_URL}/api/v1/event/event/${eventId}`).subscribe(
       (response) => {
         this.messageService.add({
           severity: 'success',
           detail: 'Event activated'
         })
-        this.loadOrganizationEventList(this.myOrganization.organizationId as number)      }
+        this.loadOrganizations()      }
     )
   }
 
   loadUsers(){
-    this.http.get<Volunteer[]>(`http://localhost:8080/api/v1/volunteer/`).subscribe(
+    this.http.get<Volunteer[]>(`${API_URL}/api/v1/volunteer/`).subscribe(
       (response) =>
       {
         this.loadedVolunteerList = response;
@@ -587,7 +588,7 @@ export class UserComponent implements OnInit{
   }
 
   loadOrganizations(){
-    this.http.get<Organization[]>(`http://localhost:8080/api/v1/organization/`).subscribe(
+    this.http.get<Organization[]>(`${API_URL}/api/v1/organization/`).subscribe(
       (response) =>
       {
         this.loadedOrganizationList = response;
@@ -596,7 +597,7 @@ export class UserComponent implements OnInit{
   }
 
   loadEvents(){
-    this.http.get<Event[]>(`http://localhost:8080/api/v1/administration/events`).subscribe(
+    this.http.get<Event[]>(`${API_URL}}/api/v1/administration/events`).subscribe(
       (response) =>
       {
         this.loadedEventsList = response;
@@ -607,7 +608,7 @@ export class UserComponent implements OnInit{
   showVolunteersList(eventId: number) {
     this.chosenEventId = eventId;
     this.showVolunteers = false;
-    this.http.get<Volunteer[]>(`http://localhost:8080/api/v1/event-registration/event/${eventId}`).subscribe(
+    this.http.get<Volunteer[]>(`${API_URL}/api/v1/event-registration/event/${eventId}`).subscribe(
       (response) => {
         this.organizationEventsVolunteersList = response;
       }
@@ -620,7 +621,7 @@ export class UserComponent implements OnInit{
   }
 
   loadOrganizationVolunteers(organizationId: number) {
-    this.http.get<Volunteer[]>("http://localhost:8080/api/v1/organization/volunteers?organizationId=" + organizationId).subscribe(
+    this.http.get<Volunteer[]>(`${API_URL}/api/v1/organization/volunteers?organizationId=` + organizationId).subscribe(
       (response) => {
         this.organizationVolunteers = response;
       }
@@ -635,7 +636,7 @@ export class UserComponent implements OnInit{
         volunteerFeedback: this.organizationRatingForm.get('feedback')?.value,
         organizationId: this.myOrganization.organizationId,
       };
-      this.http.post("http://localhost:8080/api/v1/rating", formData).subscribe(
+      this.http.post(`${API_URL}/api/v1/rating`, formData).subscribe(
         (response) => {
           this.messageService.add(
             {
@@ -660,7 +661,7 @@ export class UserComponent implements OnInit{
         organizationFeedback: this.volunteerRatingForm.get('feedback')?.value,
         volunteerId: this.volunteer.id,
       }
-      this.http.post("http://localhost:8080/api/v1/rating", formData).subscribe(
+      this.http.post(`${API_URL}/api/v1/rating`, formData).subscribe(
         (response) => {
           console.log(response);
           this.messageService.add(
@@ -676,7 +677,7 @@ export class UserComponent implements OnInit{
     }
   }
   loadVolunteerOrganizations(){
-    this.http.get<Organization[]>("http://localhost:8080/api/v1/event-registration/organization/volunteer/" + this.username).subscribe(
+    this.http.get<Organization[]>(`${API_URL}/api/v1/event-registration/organization/volunteer/` + this.username).subscribe(
       (response) => {
         this.volunteersAppliedOrganizations = response;
       }

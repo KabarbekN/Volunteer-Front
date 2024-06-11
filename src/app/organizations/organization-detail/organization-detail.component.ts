@@ -4,6 +4,7 @@ import { Organization } from '../../services/models/organization';
 import { HttpClient } from '@angular/common/http';
 import {Event} from "../../services/models/event";
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {API_URL} from "../../core/util/consts";
 
 @Component({
   selector: 'app-organization-detail',
@@ -32,7 +33,7 @@ export class OrganizationDetailComponent {
   }
 
   loadOrganizationDataById(organizationId: number) {
-    this.http.get<Organization>('http://localhost:8080/api/v1/organization/' + organizationId).subscribe(
+    this.http.get<Organization>( API_URL + '/api/v1/organization/' + organizationId).subscribe(
       (response) => {
         console.log(response)
         this.organization = response;
@@ -45,7 +46,7 @@ export class OrganizationDetailComponent {
   }
 
   loadOrganizationEventList(organizationId : number){
-    this.http.get<Event[]>(`http://localhost:8080/api/v1/event/organization/${organizationId}`).subscribe(
+    this.http.get<Event[]>(`${API_URL}/api/v1/event/organization/${organizationId}`).subscribe(
       (response) => {
         console.log(response);
         this.events = response;

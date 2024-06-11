@@ -14,6 +14,10 @@ import {ConfirmationComponent} from "./components/confirmation/confirmation.comp
 import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
+  // {
+  //   path: '/',
+  //   component: HomeComponent,
+  // },
   {
     path: 'home',
     component: HomeComponent,
